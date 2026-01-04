@@ -1,0 +1,98 @@
+import React, { useState } from "react";
+import "./Register.css";
+
+
+function Register() {
+  const [formData, setFormData] = useState({
+    user_id: "",
+    password: "",
+    email_id: "",
+    user_name: "",
+    contact: ""
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:3000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+    alert(result.message);
+  };
+
+  return (
+    <div className="register-container">
+      <h1>SafeFace</h1>
+      <p className="subtitle">
+        Uncover the truth. Protect your digital identity.
+      </p>
+
+      <form className="register-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="user_id"
+          placeholder="User ID"
+          required
+          onChange={handleChange}
+        />
+
+        <input
+          type="email"
+          name="email_id"
+          placeholder="Email ID"
+          required
+          onChange={handleChange}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password (max 12 chars)"
+          maxLength="12"
+          required
+          onChange={handleChange}
+        />
+
+        <input
+          type="text"
+          name="user_name"
+          placeholder="User Name"
+          required
+          onChange={handleChange}
+        />
+
+        <input
+          type="text"
+          name="contact"
+          placeholder="Contact Number"
+          maxLength="10"
+          required
+          onChange={handleChange}
+        />
+
+        <button type="submit">Register</button>
+        <p className="login-text">
+        If already have an account?{" "}
+        <a href="/login" className="login-link">Log in</a>
+        </p>
+
+      </form>
+    </div>
+  );
+}
+
+export default Register;
+
